@@ -1,5 +1,4 @@
 import json
-import random
 from datetime import datetime
 import os
 
@@ -34,7 +33,9 @@ def save_file(year, month, day, h, m, uid):
         "date": {
             "year": year,
             "month": month,
-            "day": day
+            "day": day,
+            "hour": h,
+            "minute": m
         }
     }
     with open(filepath, 'w', encoding='utf-8') as f:
