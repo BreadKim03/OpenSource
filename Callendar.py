@@ -33,6 +33,12 @@ class CalendarApp(QMainWindow, Ui_MainWindow):
 
 #고유번호 생성(3자리)
 def generate_id(y, m, d, h, mi):
+    #schedules 디렉토리가 없을 시 생성
+    directory = "schedules"
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+        return "001"
+    
     # 마지막 파일 uid 불러오기
     files = os.listdir("schedules")
     if not files:return "001"
@@ -58,7 +64,7 @@ def parsing_input():
             print("잘못된 입력 형식입니다.")  
 
 #파일 저장 
-def save_file(year, month, day, h, m, uid):
+def save_file(year, month, day, h, m, uid, content):
     directory = "schedules"
     os.makedirs(directory, exist_ok=True)
 
@@ -73,7 +79,8 @@ def save_file(year, month, day, h, m, uid):
             "day": day,
             "hour": h,
             "minute": m
-        }
+        },
+        "schedule": content
     }
     with open(filepath, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
