@@ -4,11 +4,32 @@ import os
 from PyQt6.QtWidgets import QApplication, QMainWindow
 import sys
 from GUI import Ui_MainWindow
+from Callendar_GUI_add import add_schedule_gui
+from Callendar_GUI_show import show_schedule_gui
+from Callendar_GUI_delete import delete_schedule_gui
 
 class CalendarApp(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+
+        self.pushButton.clicked.connect(self.add_schedule)
+        self.pushButton_2.clicked.connect(self.show_schedule)
+        self.pushButton_3.clicked.connect(self.delete_schedule)
+        self.pushButton_4.clicked.connect(self.goto_today)
+
+    def add_schedule(self):
+        add_schedule_gui(self)
+
+    def show_schedule(self):
+        show_schedule_gui(self)
+
+    def delete_schedule(self):
+        delete_schedule_gui(self)
+
+    def goto_today(self):
+        today = datetime.today().date()
+        self.calendarWidget.setSelectedDate(today)
 
 #고유번호 생성(3자리)
 def generate_id(y, m, d, h, mi):
@@ -18,7 +39,7 @@ def generate_id(y, m, d, h, mi):
     elif sorted(files)[-1].split('-')[0] != f"{y}{m}{d}{h}{mi}":return "001"
     else:
         last_file = sorted(files)[-1]
-        last_id = int(last_file.split('-')[1].split('.')[0])
+        last_id = int(last_file.split('-')[1].split('.dat')[0])
         new_id = (last_id + 1) % 1000
         return f"{new_id:03d}"
     

@@ -46,6 +46,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton.setText(_translate("MainWindow", "일정 추가/제거"))
-        self.pushButton_2.setText(_translate("MainWindow", "일정 검색"))
-        self.pushButton_4.setText(_translate("MainWindow", "일정 알림 추가/제거"))
+        self.pushButton.setText(_translate("MainWindow", "일정 추가"))
+        self.pushButton_2.setText(_translate("MainWindow", "일정 조회"))
+        self.pushButton_3.setText(_translate("MainWindow", "일정 삭제"))
+        self.pushButton_4.setText(_translate("MainWindow", "금일 이동"))

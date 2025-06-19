@@ -1,0 +1,11 @@
+{
+    "unique_id": "001",
+    "date": {
+        "year": "25",
+        "month": "07",
+        "day": "15",
+        "hour": "10",
+        "minute": "00"
+    },
+    "schedule": "abcd"
+}
