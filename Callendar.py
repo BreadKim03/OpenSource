@@ -13,7 +13,7 @@ def parsing_date():
     return str(now.year), str(now.month), str(now.day)
 
 #파일 저장 
-def save_file(year, month, day, uid):
+def save_file(year, month, day, uid, content=""):
     directory = "schedules"
     os.makedirs(directory, exist_ok=True)
 
@@ -26,7 +26,8 @@ def save_file(year, month, day, uid):
             "year": year,
             "month": month,
             "day": day
-        }
+        },
+        "schedule": content
     }
     with open(filepath, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
@@ -40,12 +41,17 @@ def load_file(filename):
     with open(filepath, 'r', encoding='utf-8') as f:
         return json.load(f)
 
+def add_schedule():
+    content = input("일정 내용을 입력하세요 :")
+    uid = generate_id()
+    y,m,d = parsing_date()
+    filename = save_file(y, m, d, uid, content)
+    print(f"일정이 저장되었습니다: {filename}")
+    
+
 #실행
 if __name__ == "__main__":
-    uid = generate_id()
-    y, m, d = parsing_date()
-    filename = save_file(y, m, d, uid)
-    print(f"일정이 저장되었습니다: {filename}")
+    add_schedule()
 
 def check_schedule():
     directory = "schedules"
