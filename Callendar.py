@@ -3,11 +3,12 @@ from datetime import datetime
 import os
 from PyQt6.QtWidgets import QApplication, QMainWindow
 import sys
-from GUI.py import Ui_MainWindow
+from GUI import Ui_MainWindow
 
 class CalendarApp(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
+        self.setupUi(self)
 
 #고유번호 생성(3자리)
 def generate_id(y, m, d, h, mi):
@@ -64,13 +65,6 @@ def load_file(filename):
         return "오류 : 해당 일정이 존재하지 않습니다."
     with open(filepath, 'r', encoding='utf-8') as f:
         return json.load(f)
-
-#실행
-if __name__ == "__main__":
-    y, m, d, h, mi = parsing_input()
-    uid = generate_id(y, m, d, h, mi)
-    filename = save_file(y, m, d, h, mi, uid)
-    print(f"일정이 저장되었습니다: {filename}")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
