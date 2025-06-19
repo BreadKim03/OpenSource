@@ -4,6 +4,12 @@ import os
 
 #고유번호 생성(3자리)
 def generate_id(y, m, d, h, mi):
+    #schedules 디렉토리가 없을 시 생성
+    directory = "schedules"
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+        return "001"
+    
     # 마지막 파일 uid 불러오기
     files = os.listdir("schedules")
     if not files:return "001"
