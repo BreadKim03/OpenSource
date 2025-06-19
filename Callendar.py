@@ -173,11 +173,63 @@ def delete_schedule():
     filepath = os.path.join(directory, target)
     os.remove(filepath)
     print(f"'{target}' 일정이 삭제되었습니다.")
+    
+#일정 수정
+def edit_schedule(uid):
+    directory = "schedules"
+    files = os.listdir(directory)
+    
+    if not os.path.exists(directory):
+        print("오류 : 일정이 존재하지 않습니다.")
+        return
+    
+    files = os.listdir(directory)
+    if not files:
+        print("오류 : 일정이 존재하지 않습니다.")
+        return
+    
+    file = None
+    
+    for fname in files:
+        if not fname.endswith('.dat'):
+            continue
+        parts = fname[:-4].split('-')
+        if len(parts) != 4:
+            continue
+        _, _, _, fuid = parts
 
-
+        if fuid == uid:
+            file = fname
+            break
+        
+    if not file:
+        print("조건에 맞는 일정이 없습니다.")
+        return
+    
+    data = load_file(file)
+    print("\n선택된 일정 정보")
+    print(f"\n날짜: {data['date']['year']}-{data['date']['month']}-{data['date']['day']}")
+    print(f"\n내용: {data['schedule']}\n")
+    
+    content = input("수정할 내용을 입력하세요 : ")
+    data['schedule'] = content
+    filepath = os.path.join(directory, file)
+    with open(filepath, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=4, ensure_ascii=False)
+        
+    print("해당 일정의 내용이 수정되었습니다.")
+    
 #실행
 if __name__ == "__main__":
-    delete_schedule()
-
-
-
+    while(1):
+        print("1. 일정 추가 2. 일정 조회 3. 일정 수정 4. 종료")
+        choice = input("작업 선택 : ")
+        if choice == "1":
+            add_schedule()
+        elif choice == "2":
+            check_schedule()
+        elif choice == "3":
+            uid = input("수정할 일정의 고유번호를 입력하세요 : ")
+            edit_schedule(uid)
+        else:
+            break
