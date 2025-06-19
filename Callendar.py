@@ -220,7 +220,7 @@ def edit_schedule(uid):
     print("해당 일정의 내용이 수정되었습니다.")
     
 if __name__ == "__main__":
-    while True:
+    while (1):
         print("\n-----일정 관리 프로그램----")
         print("1. 일정 추가")
         print("2. 일정 조회")
@@ -228,7 +228,7 @@ if __name__ == "__main__":
         print("4. 일정 삭제")
         print("5. 종료")
         choice = input("작업 선택: ")
-        
+    
         if choice == "1":
             add_schedule()
         elif choice == "2":
