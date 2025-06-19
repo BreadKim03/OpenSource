@@ -29,7 +29,7 @@ def parsing_input():
             print("잘못된 입력 형식입니다.")  
 
 #파일 저장 
-def save_file(year, month, day, uid, h, m, content=""):
+def save_file(year, month, day, h, m, uid, content):
     directory = "schedules"
     os.makedirs(directory, exist_ok=True)
 
@@ -62,11 +62,10 @@ def load_file(filename):
 #일정 추가
 def add_schedule():
     content = input("일정 내용을 입력하세요 :")
-    uid = generate_id()
     y,m,d,h,mi = parsing_input()
+    uid = generate_id(y, m, d, h, mi)
     filename = save_file(y, m, d, h, mi, uid, content)
-    print(f"일정이 저장되었습니다: {filename}")
-    
+    print(f"일정이 저장되었습니다: {filename}") 
 
 #일정 조회
 def check_schedule():
@@ -86,16 +85,16 @@ def check_schedule():
     year = month = day = None
     
     if ch == "1":
-        year = input("조회할 년도를 입력해주세요.")
+        year = input("조회할 년도를 입력해주세요. (YYYY) :")[2:]
         
     elif ch == "2":
-        year = input("조회할 년도를 입력해주세요.")
-        month = input("해당 년도의 조회할 월을 입력해주세요.")
+        year = input("조회할 년도를 입력해주세요. (YYYY) :")[2:]
+        month = input("해당 년도의 조회할 월을 입력해주세요. (MM) :")
         
     elif ch == "3":
-        year = input("조회할 년도를 입력해주세요.")
-        month = input("해당 년도의 조회할 월을 입력해주세요.")
-        day = input("조회할 일자를 입력해주세요.")
+        year = input("조회할 년도를 입력해주세요.  (YYYY) :")[2:]
+        month = input("해당 년도의 조회할 월을 입력해주세요. (MM) :")
+        day = input("조회할 일자를 입력해주세요. (DD) :")
         
     else:
         print("다시 입력해주세요.")
@@ -106,7 +105,7 @@ def check_schedule():
     for fname in files:
         if not fname.endswith('.dat'):
             continue
-        parts = fname[:-4].split('-')
+        parts = [fname[:2],fname[2:4],fname[4:6],fname.split('-')[1]]
         if len(parts) != 4:
             continue
         y, m, d, uid = parts
@@ -145,15 +144,15 @@ def delete_schedule():
         print("오류 : 일정이 존재하지 않습니다.")
         return
     
-    year = input("삭제할 일정의 년도를 입력하세요")
-    month = input("해당 년도의 조회할 월을 입력해주세요.")
-    day = input("조회할 일자를 입력해주세요.")
+    year = input("삭제할 일정의 년도를 입력하세요 (YYYY) :")[2:]
+    month = input("해당 년도의 조회할 월을 입력해주세요. (MM) :")
+    day = input("조회할 일자를 입력해주세요. (DD) :")
 
     search = []
     for fname in files:
         if not fname.endswith(".dat"):
             continue
-        parts = fname[:-4].split('-')
+        parts = [fname[:2],fname[2:4],fname[4:6],fname.split('-')[1]]
         if len(parts) != 4:
             continue
         y,m,d,uid = parts
@@ -211,7 +210,7 @@ def edit_schedule(uid):
     for fname in files:
         if not fname.endswith('.dat'):
             continue
-        parts = fname[:-4].split('-')
+        parts = [fname[:2],fname[2:4],fname[4:6],fname.split('-')[1]]
         if len(parts) != 4:
             continue
         _, _, _, fuid = parts
