@@ -1,6 +1,13 @@
 import json
 from datetime import datetime
 import os
+from PyQt6.QtWidgets import QApplication, QMainWindow
+import sys
+from GUI.py import Ui_MainWindow
+
+class CalendarApp(QMainWindow, Ui_MainWindow):
+    def __init__(self):
+        super().__init__()
 
 #고유번호 생성(3자리)
 def generate_id(y, m, d, h, mi):
@@ -64,3 +71,9 @@ if __name__ == "__main__":
     uid = generate_id(y, m, d, h, mi)
     filename = save_file(y, m, d, h, mi, uid)
     print(f"일정이 저장되었습니다: {filename}")
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    main_window = CalendarApp()
+    main_window.show()
+    sys.exit(app.exec()) 
