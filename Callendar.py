@@ -142,9 +142,9 @@ def delete_schedule():
         if y == year and m == month and d == day:
             search.append((fname, uid))
         
-        if not search:
-            print("해당 날짜에 일정이 없습니다.")
-            return
+    if not search:
+        print("해당 날짜에 일정이 없습니다.")
+        return
         
     print(f"\n{year}-{month}-{day} 일정목록")
     for i, (fname, uid) in enumerate(search, 1):
@@ -219,17 +219,27 @@ def edit_schedule(uid):
         
     print("해당 일정의 내용이 수정되었습니다.")
     
-#실행
 if __name__ == "__main__":
-    while(1):
-        print("1. 일정 추가 2. 일정 조회 3. 일정 수정 4. 종료")
-        choice = input("작업 선택 : ")
+    while (1):
+        print("\n-----일정 관리 프로그램----")
+        print("1. 일정 추가")
+        print("2. 일정 조회")
+        print("3. 일정 수정")
+        print("4. 일정 삭제")
+        print("5. 종료")
+        choice = input("작업 선택: ")
+    
         if choice == "1":
             add_schedule()
         elif choice == "2":
             check_schedule()
         elif choice == "3":
-            uid = input("수정할 일정의 고유번호를 입력하세요 : ")
+            uid = input("수정할 일정의 고유번호를 입력하세요: ")
             edit_schedule(uid)
-        else:
+        elif choice == "4":
+            delete_schedule()
+        elif choice == "5":
+            print("프로그램을 종료합니다.")
             break
+        else:
+            print("올바른 선택지를 입력해주세요.")
