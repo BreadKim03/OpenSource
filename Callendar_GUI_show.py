@@ -1,17 +1,21 @@
-from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QMessageBox, QTextEdit, QWidget, QScrollArea
+from PyQt6.QtWidgets import QTableWidgetItem
+from PyQt6 import QtCore
 import os
 import json
 
 def show_schedule_gui(parent):
+    todo = parent.tableWidget
     selected_date = parent.calendarWidget.selectedDate().toPyDate()
     y = f"{selected_date.year % 100:02d}"
     m = f"{selected_date.month:02d}"
     d = f"{selected_date.day:02d}"
-
+    item = QTableWidgetItem("")
     directory = "schedules"
     if not os.path.exists(directory):
-        QMessageBox.warning(parent, "오류", "일정 디렉토리가 존재하지 않습니다.")
-        return
+        os.makedirs("schedules", exist_ok=True)
+        todo.setRowCount(1)
+        todo.setItem(0, 0, item)
+        todo.setItem(0, 1, QTableWidgetItem(""))
 
     files = [f for f in os.listdir(directory) if f.endswith(".dat")]
     matched = []
@@ -27,40 +31,20 @@ def show_schedule_gui(parent):
                 continue
 
     if not matched:
-        QMessageBox.information(parent, "일정 없음", f"{selected_date.year}년 {selected_date.month}월 {selected_date.day}일 일정이 없습니다.")
-        return
+        todo.setRowCount(1)
+        todo.setItem(0, 0, item)
+        todo.setItem(0, 1, QTableWidgetItem(""))
 
-    # 일정 목록 출력용 다이얼로그
-    dialog = QDialog(parent)
-    dialog.setWindowTitle("일정 조회")
-    dialog.setFixedSize(400, 300)
-
-    main_dialog_layout = QVBoxLayout(dialog)
-
-    content_widget = QWidget()
-
-    content_layout = QVBoxLayout(content_widget)
-    content_layout.setSpacing(0)
-    content_layout.setContentsMargins(0, 0, 0, 0)
-
-    title_label = QLabel(f"{selected_date.year}년 {selected_date.month}월 {selected_date.day}일 일정 목록")
-    content_layout.addWidget(title_label)
-
-    for data in matched:
-        uid = data['unique_id']
+    for i, data in enumerate(matched):
         hour = data['date']['hour']
         minute = data['date']['minute']
         content = data['schedule']
-        label_text = f"[{hour}:{minute}] 일정 : {content} (ID : {uid})"
-        schedule_label = QLabel(label_text)
-        content_layout.addWidget(schedule_label)
-
-    content_layout.addStretch()
-
-    scroll_area = QScrollArea()
-    scroll_area.setWidgetResizable(True)
-    scroll_area.setWidget(content_widget)
-
-    main_dialog_layout.addWidget(scroll_area)
-
-    dialog.exec()
+        todo.setRowCount(i + 1)
+        item = QTableWidgetItem(f"{hour}:{minute}")
+        preset(item)
+        todo.setItem(i, 0, QTableWidgetItem(item))
+        todo.setItem(i, 1, QTableWidgetItem(content))
+    
+def preset(item):
+    item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+    item.setCheckState(QtCore.Qt.CheckState.Unchecked)
